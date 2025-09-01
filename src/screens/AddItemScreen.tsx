@@ -1,0 +1,153 @@
+import React, { useRef, useState, useCallback } from 'react';
+import { View, Text, TextInput, StyleSheet, Pressable, ScrollView, Alert, Animated, KeyboardAvoidingView, Platform } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../App';
+import { useMenu } from '../context/MenuContext';
+import { Course } from '../types';
+import { colors } from '../theme/colors';
+
+type Props = NativeStackScreenProps<RootStackParamList, 'AddItem'>;
+
+export default function AddItemScreen({ navigation }: Props) {
+  const { addItem } = useMenu();
+
+  const [name, setName] = useState('');
+  const [desc, setDesc] = useState('');
+  const [price, setPrice] = useState('');
+  const [course, setCourse] = useState<Course>('Starters');
+
+  const scale = useRef(new Animated.Value(1)).current;
+
+  const onSave = useCallback(() => {
+    const priceNum = Number(price);
+    if (!name.trim() || !desc.trim() || !price || isNaN(priceNum) || priceNum <= 0) {
+      Alert.alert('Validation', 'Please enter a valid name, description, and positive price.');
+      return;
+    }
+    addItem({ name: name.trim(), description: desc.trim(), price: priceNum, course });
+    setName('');
+    setDesc('');
+    setPrice('');
+    setCourse('Starters');
+    Alert.alert('Success', 'Menu item added.', [{ text: 'OK', onPress: () => navigation.goBack() }]);
+  }, [name, desc, price, course, addItem, navigation]);
+
+  const animate = useCallback((to: number) => {
+    Animated.spring(scale, { toValue: to, useNativeDriver: true, friction: 5 }).start();
+  }, [scale]);
+
+  const handleBackPress = useCallback(() => {
+    navigation.goBack();
+  }, [navigation]);
+
+  return (
+    <KeyboardAvoidingView behavior={Platform.select({ ios: 'padding', android: undefined })} style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.label}>Dish Name</Text>
+        <TextInput
+          style={styles.input}
+          value={name}
+          onChangeText={setName}
+          placeholder="e.g. Tomato Bruschetta"
+          placeholderTextColor={colors.muted}
+        />
+
+        <Text style={styles.label}>Description</Text>
+        <TextInput
+          style={[styles.input, styles.multiline]}
+          value={desc}
+          onChangeText={setDesc}
+          placeholder="Short description..."
+          placeholderTextColor={colors.muted}
+          multiline
+        />
+
+        <Text style={styles.label}>Price (ZAR)</Text>
+        <TextInput
+          style={styles.input}
+          value={price}
+          onChangeText={setPrice}
+          placeholder="e.g. 89"
+          placeholderTextColor={colors.muted}
+          keyboardType="numeric"
+        />
+
+        <Text style={styles.label}>Course</Text>
+        <View style={styles.pickerWrap}>
+          <Picker
+            selectedValue={course}
+            onValueChange={(v) => setCourse(v as Course)}
+          >
+            <Picker.Item label="Starters" value="Starters" />
+            <Picker.Item label="Mains" value="Mains" />
+            <Picker.Item label="Dessert" value="Dessert" />
+          </Picker>
+        </View>
+
+        <Animated.View style={{ transform: [{ scale }], marginTop: 16 }}>
+          <Pressable
+            style={styles.saveBtn}
+            onPressIn={() => animate(0.98)}
+            onPressOut={() => animate(1)}
+            onPress={onSave}
+          >
+            <Text style={styles.saveText}>Save Item</Text>
+          </Pressable>
+        </Animated.View>
+
+        <View style={styles.navButtons}>
+          <Pressable style={styles.backBtn} onPress={handleBackPress}>
+            <Text style={styles.backText}>Back to Home</Text>
+          </Pressable>
+          <Pressable style={styles.navBtn} onPress={() => navigation.navigate('Filter')}>
+            <Text style={styles.navBtnText}>Filter</Text>
+          </Pressable>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { padding: 16, backgroundColor: colors.bg },
+  label: { color: colors.text, fontWeight: '700', marginTop: 12, marginBottom: 6 },
+  input: {
+    backgroundColor: colors.white,
+    borderColor: colors.border,
+    borderWidth: 1,
+    padding: 12,
+    borderRadius: 10,
+    color: colors.text,
+  },
+  multiline: { minHeight: 80, textAlignVertical: 'top' },
+  pickerWrap: {
+    backgroundColor: colors.white,
+    borderColor: colors.border,
+    borderWidth: 1,
+    borderRadius: 10,
+  },
+  saveBtn: { backgroundColor: colors.primary, padding: 14, borderRadius: 12, alignItems: 'center' },
+  saveText: { color: colors.white, fontWeight: '800' },
+  backBtn: { marginTop: 10, borderWidth: 2, borderColor: colors.primary, padding: 12, borderRadius: 12, alignItems: 'center' },
+  backText: { color: colors.primary, fontWeight: '800' },
+  navButtons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 12,
+    marginTop: 16,
+  },
+  navBtn: {
+    backgroundColor: colors.primary,
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    flex: 1,
+    alignItems: 'center',
+  },
+  navBtnText: {
+    color: colors.white,
+    fontWeight: '700',
+    fontSize: 16,
+  },
+});
