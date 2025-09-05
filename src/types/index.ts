@@ -61,6 +61,7 @@ export type UserContextValue = {
   currentUser: User | null;                    // Currently logged-in user
   users: User[];                              // Array of all users
   login: (userCode: string) => boolean;       // Login function with user code
+  signup: (name: string, userCode: string) => boolean; // Signup function
   logout: () => void;                         // Logout function
   canAddItem: () => boolean;                  // Check if user can add items
   canEditItem: () => boolean;                 // Check if user can edit items

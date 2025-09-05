@@ -1,5 +1,9 @@
 # Christoffel's Menu - React Native App
 
+<p align="center">
+  <img src="assets/Bordeaux_and_Co.jpeg" alt="Christoffel's Menu Logo" width="200"/>
+</p>
+
 A modern, elegant restaurant menu management application built with React Native and Expo. This app allows restaurant staff to manage menu items, track pricing, and maintain an organized digital menu system.
 
 ## Features
@@ -63,7 +67,8 @@ src/
 │   ├── AddItemScreenStyles.ts
 │   ├── FilterScreenStyles.ts
 │   ├── MenuItemCardStyles.ts
-│   └── SearchBarStyles.ts
+│   ├── SearchBarStyles.ts
+│   └── SignupScreenStyles.ts
 ├── theme/              # Theme configuration
 │   └── colors.ts           # Color palette definitions
 ├── types/              # TypeScript type definitions
@@ -109,6 +114,7 @@ interface MenuItem {
 const UserContextValue = {
   user: User | null,           // Current logged-in user
   login: (userCode: string) => boolean,  // Login with user code
+  signup: (name: string, userCode: string) => boolean,  // Create new user account
   logout: () => void,          // Logout current user
   hasPermission: (action: string) => boolean  // Check user permissions
 }

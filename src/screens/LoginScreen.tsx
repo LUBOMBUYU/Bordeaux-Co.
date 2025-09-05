@@ -12,7 +12,7 @@
  */
 
 import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable, Alert, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, TextInput, Pressable, Alert, SafeAreaView, ScrollView, Image } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
 import { useUser } from '../context/UserContext';
@@ -57,6 +57,11 @@ export default function LoginScreen({ navigation }: Props) {
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
       <ScrollView contentContainerStyle={{ padding: 20, flexGrow: 1, justifyContent: 'center' }}>
         <View style={{ alignItems: 'center', marginBottom: 40 }}>
+          <Image
+            source={require('../../assets/Bordeaux_and_Co.jpeg')}
+            style={{ width: 150, height: 150, marginBottom: 20 }}
+            resizeMode="contain"
+          />
           <Text style={{ fontSize: 28, fontWeight: 'bold', color: colors.primary, marginBottom: 10 }}>
             Christoffel's Menu
           </Text>
@@ -100,6 +105,12 @@ export default function LoginScreen({ navigation }: Props) {
         >
           <Text style={{ color: colors.white, fontSize: 16, fontWeight: 'bold' }}>
             Login
+          </Text>
+        </Pressable>
+
+        <Pressable onPress={() => navigation.navigate('Signup')}>
+          <Text style={{ color: colors.primary, fontSize: 16, textAlign: 'center' }}>
+            Don't have an account? Sign up here
           </Text>
         </Pressable>
 

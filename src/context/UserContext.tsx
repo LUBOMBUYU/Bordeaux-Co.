@@ -53,6 +53,22 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     return false;
   };
 
+  const signup = (name: string, userCode: string): boolean => {
+    const exists = users.some(u => u.userCode === userCode);
+    if (exists) {
+      return false;
+    }
+    const newUser = {
+      id: (users.length + 1).toString(),
+      name,
+      userCode,
+      type: 'customer' as const,
+    };
+    setCurrentUser(newUser);
+    users.push(newUser);
+    return true;
+  };
+
   const logout = () => {
     setCurrentUser(null);
   };
@@ -78,6 +94,7 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
       currentUser,
       users,
       login,
+      signup,
       logout,
       canAddItem,
       canEditItem,

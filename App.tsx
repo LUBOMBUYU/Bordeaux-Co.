@@ -18,6 +18,7 @@ import HomeScreen from './src/screens/HomeScreens';
 import AddItemScreen from './src/screens/AddItemScreen';
 import FilterScreen from './src/screens/FilterScreen';
 import LoginScreen from './src/screens/LoginScreen';
+import SignupScreen from './src/screens/SignupScreen';
 import { MenuProvider } from './src/context/MenuContext';
 import { UserProvider } from './src/context/UserContext';
 import ErrorBoundary from './src/components/ErrorBoundary';
@@ -28,6 +29,7 @@ import ErrorBoundary from './src/components/ErrorBoundary';
  */
 export type RootStackParamList = {
   Login: undefined;       // Login screen - no parameters needed
+  Signup: undefined;      // Signup screen - no parameters needed
   Home: undefined;        // Home screen - no parameters needed
   AddItem: undefined;     // Add item screen - no parameters needed
   Filter: undefined;      // Filter screen - no parameters needed
@@ -71,6 +73,12 @@ export default function App() {
                 name="Login"
                 component={LoginScreen}
                 options={{ title: 'Login' }}
+              />
+              {/* Signup screen - user registration */}
+              <Stack.Screen
+                name="Signup"
+                component={SignupScreen}
+                options={{ title: 'Signup' }}
               />
               {/* Home screen - main menu display */}
               <Stack.Screen
