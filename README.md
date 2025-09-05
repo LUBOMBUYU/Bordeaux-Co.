@@ -4,12 +4,21 @@ A modern, elegant restaurant menu management application built with React Native
 
 ## Features
 
+### 🔐 User-Based Login System
+- **Role-Based Access**: Three user types - Owner, Employee, and Customer
+- **Secure Login**: User code-based authentication system
+- **Permission Management**: Different access levels for menu management
+- **Owner Access**: Full control over menu items (add, edit, remove)
+- **Employee Access**: Can add items but cannot modify prices
+- **Customer Access**: Read-only access to menu browsing
+
 ### 🏠 Home Screen
 - **Menu Display**: View all menu items in a clean, scrollable list
 - **Search Functionality**: Real-time search through menu items by name or description
 - **Sorting Options**: Sort items alphabetically or by price (ascending/descending)
 - **Course Averages**: Display average prices for each course (Starters, Mains, Dessert)
 - **Restaurant Branding**: Custom logo display with elegant dark theme
+- **Role-Based UI**: Interface adapts based on user permissions
 
 ### ➕ Add Menu Items
 - **Item Creation**: Add new menu items with name, description, course, and price
@@ -42,11 +51,13 @@ src/
 │   ├── MenuItemCard.tsx     # Individual menu item display
 │   └── SearchBar.tsx        # Search input component
 ├── context/             # React Context for state management
-│   └── MenuContext.tsx      # Menu state and business logic
+│   ├── MenuContext.tsx      # Menu state and business logic
+│   └── UserContext.tsx      # User authentication and role management
 ├── screens/            # Main application screens
 │   ├── HomeScreens.tsx      # Main menu display
 │   ├── AddItemScreen.tsx    # Add new menu items
-│   └── FilterScreen.tsx     # Course filtering
+│   ├── FilterScreen.tsx     # Course filtering
+│   └── LoginScreen.tsx      # User authentication screen
 ├── styles/             # StyleSheet definitions
 │   ├── HomeScreens.ts       # Home screen styling
 │   ├── AddItemScreenStyles.ts
@@ -56,7 +67,7 @@ src/
 ├── theme/              # Theme configuration
 │   └── colors.ts           # Color palette definitions
 ├── types/              # TypeScript type definitions
-│   └── index.ts            # MenuItem and Course types
+│   └── index.ts            # MenuItem, Course, and User types
 └── utils/              # Utility functions
     ├── currency.ts         # Currency formatting
     └── navigation.ts       # Navigation helpers
@@ -64,6 +75,7 @@ src/
 
 ### 🔄 State Management
 - **Context API**: React Context for global menu state management
+- **User Context**: Separate context for user authentication and role management
 - **Local State**: Component-level state for UI interactions
 - **Memoization**: Optimized re-renders with useMemo and useCallback
 
@@ -88,6 +100,27 @@ interface MenuItem {
   description: string;  // Item description
   course: Course;       // 'Starters' | 'Mains' | 'Dessert'
   price: number;        // Price in ZAR
+}
+```
+
+#### UserContext
+```typescript
+// User authentication and role management
+const UserContextValue = {
+  user: User | null,           // Current logged-in user
+  login: (userCode: string) => boolean,  // Login with user code
+  logout: () => void,          // Logout current user
+  hasPermission: (action: string) => boolean  // Check user permissions
+}
+```
+
+#### User Structure
+```typescript
+interface User {
+  id: string;           // Unique identifier
+  name: string;         // User display name
+  userCode: string;     // Authentication code
+  type: UserType;       // 'owner' | 'employee' | 'customer'
 }
 ```
 
