@@ -29,3 +29,41 @@ export interface MenuItem {
   course: Course;       // Which course category this item belongs to
   price: number;        // Price in South African Rand (ZAR)
 }
+
+/**
+ * User Types
+ *
+ * Defines the three user types in the system:
+ * - owner: Full access to all features
+ * - employee: Can add/edit menu items but not prices
+ * - customer: Read-only access to menu
+ */
+export type UserType = 'owner' | 'employee' | 'customer';
+
+/**
+ * User Interface
+ *
+ * Represents a user in the system with authentication details.
+ */
+export interface User {
+  id: string;           // Unique identifier
+  name: string;         // Display name of the user
+  userCode: string;     // Distinct user code for login
+  type: UserType;       // User type determining permissions
+}
+
+/**
+ * User Context Value Type
+ *
+ * Defines the shape of data and functions available in UserContext.
+ */
+export type UserContextValue = {
+  currentUser: User | null;                    // Currently logged-in user
+  users: User[];                              // Array of all users
+  login: (userCode: string) => boolean;       // Login function with user code
+  logout: () => void;                         // Logout function
+  canAddItem: () => boolean;                  // Check if user can add items
+  canEditItem: () => boolean;                 // Check if user can edit items
+  canEditPrice: () => boolean;                // Check if user can edit prices
+  canRemoveItem: () => boolean;               // Check if user can remove items
+};

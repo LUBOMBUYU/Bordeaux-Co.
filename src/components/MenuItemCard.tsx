@@ -4,6 +4,7 @@ import { MenuItem } from '../types';
 import { colors } from '../theme/colors';
 import { formatZAR } from '../utils/currency';
 import { styles } from '../styles/MenuItemCardStyles';
+import { useUser } from '../context/UserContext';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -17,6 +18,7 @@ type Props = {
 const MenuItemCardComponent: React.FC<Props> = ({ item, onRemove }) => {
   const scale = useRef(new Animated.Value(1)).current;
   const [visible, setVisible] = useState(true);
+  const { canRemoveItem } = useUser();
 
   const animate = (to: number) => {
     Animated.spring(scale, { toValue: to, useNativeDriver: true, friction: 3 }).start();
@@ -41,7 +43,7 @@ const MenuItemCardComponent: React.FC<Props> = ({ item, onRemove }) => {
       <Text style={styles.meta}>{item.course}</Text>
       <Text style={styles.desc}>{item.description}</Text>
 
-      {onRemove ? (
+      {onRemove && canRemoveItem() ? (
         <Pressable
           style={({ pressed }) => [styles.removeBtn, pressed && { opacity: 0.8 }]}
           onPressIn={() => animate(0.98)}

@@ -17,10 +17,11 @@
  */
 
 import React, { useMemo, useState, useCallback, useEffect } from 'react';
-import { View, Text, FlatList, Pressable, SafeAreaView, Image } from 'react-native';
+import { View, Text, FlatList, Pressable, SafeAreaView, Image, Alert } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
 import { useMenu } from '../context/MenuContext';
+import { useUser } from '../context/UserContext';
 import MenuItemCard from '../components/MenuItemCard';
 import { colors } from '../theme/colors';
 import SearchBar from '../components/SearchBar';
@@ -49,6 +50,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 export default function HomeScreen({ navigation }: Props) {
   // Extract menu data and functions from context
   const { items, removeItem, averagesByCourse } = useMenu();
+  const { currentUser, logout, canAddItem, canRemoveItem } = useUser();
 
   // Local state for search and sorting functionality
   const [searchTerm, setSearchTerm] = useState('');                    // Current search input
@@ -104,29 +106,57 @@ export default function HomeScreen({ navigation }: Props) {
     ));
   }, [averagesByCourse]);
 
+  const handleLogout = () => {
+    Alert.alert(
+      'Logout',
+      'Are you sure you want to logout?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Logout', onPress: () => {
+          console.log('Logout button pressed'); // Debugging
+          logout();
+          navigation.replace('Login');
+        }},
+      ]
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerArea}>
-        <Image source={require('../../assets/Bordeaux & Co..jpeg')} style={styles.logo} resizeMode="contain" />
+        <Image source={require('../../assets/Bordeaux_and_Co.jpeg')} style={styles.logo} resizeMode="contain" />
         <Text style={styles.title}>Christoffel’s Menu</Text>
         <Text style={styles.subtitle}>Items: {totalItems}</Text>
+        {currentUser && (
+          <Text style={{ color: colors.muted, fontSize: 14, marginTop: 4 }}>
+            Logged in as: {currentUser.name} ({currentUser.type})
+          </Text>
+        )}
         <View style={styles.badgeRow}>{averagesRow}</View>
       </View>
 
       <SearchBar value={searchTerm} onChangeText={setSearchTerm} placeholder="Search menu items..." />
 
       <View style={styles.navButtons}>
-        <Pressable
-          style={styles.navBtn}
-          onPress={() => navigation.navigate('AddItem')}
-        >
-          <Text style={styles.navBtnText}>Add Item</Text>
-        </Pressable>
+        {canAddItem() && (
+          <Pressable
+            style={styles.navBtn}
+            onPress={() => navigation.navigate('AddItem')}
+          >
+            <Text style={styles.navBtnText}>Add Item</Text>
+          </Pressable>
+        )}
         <Pressable
           style={styles.navBtn}
           onPress={() => navigation.navigate('Filter')}
         >
           <Text style={styles.navBtnText}>Filter</Text>
+        </Pressable>
+        <Pressable
+          style={[styles.navBtn, { backgroundColor: colors.danger }]}
+          onPress={handleLogout}
+        >
+          <Text style={styles.navBtnText}>Logout</Text>
         </Pressable>
       </View>
 

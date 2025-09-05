@@ -17,7 +17,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './src/screens/HomeScreens';
 import AddItemScreen from './src/screens/AddItemScreen';
 import FilterScreen from './src/screens/FilterScreen';
+import LoginScreen from './src/screens/LoginScreen';
 import { MenuProvider } from './src/context/MenuContext';
+import { UserProvider } from './src/context/UserContext';
 import ErrorBoundary from './src/components/ErrorBoundary';
 
 /**
@@ -25,6 +27,7 @@ import ErrorBoundary from './src/components/ErrorBoundary';
  * Each screen in the stack navigator has a corresponding entry here
  */
 export type RootStackParamList = {
+  Login: undefined;       // Login screen - no parameters needed
   Home: undefined;        // Home screen - no parameters needed
   AddItem: undefined;     // Add item screen - no parameters needed
   Filter: undefined;      // Filter screen - no parameters needed
@@ -42,44 +45,55 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
  * Component hierarchy:
  * App
  * ├── ErrorBoundary (catches crashes)
- *     ├── MenuProvider (global state)
- *         ├── NavigationContainer (navigation state)
- *             └── Stack.Navigator (screen management)
- *                 ├── HomeScreen
- *                 ├── AddItemScreen
- *                 └── FilterScreen
+ *     ├── UserProvider (user auth state)
+ *         ├── MenuProvider (global state)
+ *             ├── NavigationContainer (navigation state)
+ *                 └── Stack.Navigator (screen management)
+ *                     ├── LoginScreen
+ *                     ├── HomeScreen
+ *                     ├── AddItemScreen
+ *                     └── FilterScreen
  */
 export default function App() {
   return (
     // Error boundary catches any JavaScript errors in child components
     <ErrorBoundary>
-      {/* MenuProvider provides menu state to all child components */}
-      <MenuProvider>
-        {/* NavigationContainer manages navigation state and deep linking */}
-        <NavigationContainer>
-          {/* Stack Navigator handles screen transitions with native animations */}
-          <Stack.Navigator>
-            {/* Home screen - main menu display */}
-            <Stack.Screen
-              name="Home"
-              component={HomeScreen}
-              options={{ title: "Christoffel's Menu" }}
-            />
-            {/* Add item screen - form for creating new menu items */}
-            <Stack.Screen
-              name="AddItem"
-              component={AddItemScreen}
-              options={{ title: 'Add Menu Item' }}
-            />
-            {/* Filter screen - course-based filtering */}
-            <Stack.Screen
-              name="Filter"
-              component={FilterScreen}
-              options={{ title: 'Filter by Course' }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </MenuProvider>
+      {/* UserProvider provides user auth state */}
+      <UserProvider>
+        {/* MenuProvider provides menu state to all child components */}
+        <MenuProvider>
+          {/* NavigationContainer manages navigation state and deep linking */}
+          <NavigationContainer>
+            {/* Stack Navigator handles screen transitions with native animations */}
+            <Stack.Navigator initialRouteName="Login">
+              {/* Login screen - user authentication */}
+              <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+                options={{ title: 'Login' }}
+              />
+              {/* Home screen - main menu display */}
+              <Stack.Screen
+                name="Home"
+                component={HomeScreen}
+                options={{ title: "Christoffel's Menu" }}
+              />
+              {/* Add item screen - form for creating new menu items */}
+              <Stack.Screen
+                name="AddItem"
+                component={AddItemScreen}
+                options={{ title: 'Add Menu Item' }}
+              />
+              {/* Filter screen - course-based filtering */}
+              <Stack.Screen
+                name="Filter"
+                component={FilterScreen}
+                options={{ title: 'Filter by Course' }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </MenuProvider>
+      </UserProvider>
     </ErrorBoundary>
   );
 }

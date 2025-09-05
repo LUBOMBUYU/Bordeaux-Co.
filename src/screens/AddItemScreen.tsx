@@ -4,6 +4,7 @@ import { Picker } from '@react-native-picker/picker';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
 import { useMenu } from '../context/MenuContext';
+import { useUser } from '../context/UserContext';
 import { Course } from '../types';
 import { colors } from '../theme/colors';
 import { styles } from '../styles/AddItemScreenStyles';
@@ -12,6 +13,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'AddItem'>;
 
 export default function AddItemScreen({ navigation }: Props) {
   const { addItem } = useMenu();
+  const { canEditPrice } = useUser();
 
   const [name, setName] = useState('');
   const [desc, setDesc] = useState('');
@@ -72,7 +74,13 @@ export default function AddItemScreen({ navigation }: Props) {
           placeholder="e.g. 89"
           placeholderTextColor={colors.muted}
           keyboardType="numeric"
+          editable={canEditPrice()}
         />
+        {!canEditPrice() && (
+          <Text style={{ color: colors.muted, fontSize: 12, marginTop: 4 }}>
+            Only owners can edit prices
+          </Text>
+        )}
 
         <Text style={styles.label}>Course</Text>
         <View style={styles.pickerWrap}>

@@ -19,6 +19,7 @@
 
 import React, { createContext, useContext, useMemo, useState } from 'react';
 import { MenuItem, Course } from '../types';
+import { useUser } from './UserContext';
 
 /**
  * Context value type definition
@@ -51,13 +52,20 @@ const initialItems: MenuItem[] = [
 
 export const MenuProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [items, setItems] = useState<MenuItem[]>(initialItems);
+  const { canAddItem, canRemoveItem } = useUser();
 
   const addItem = (item: Omit<MenuItem, 'id'>) => {
+    if (!canAddItem()) {
+      throw new Error('Insufficient permissions to add menu items');
+    }
     const id = Date.now().toString();
     setItems(prev => [...prev, { ...item, id }]);
   };
 
   const removeItem = (id: string) => {
+    if (!canRemoveItem()) {
+      throw new Error('Insufficient permissions to remove menu items');
+    }
     setItems(prev => prev.filter(i => i.id !== id));
   };
 
