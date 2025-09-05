@@ -1,20 +1,59 @@
+/**
+ * Home Screen Component
+ *
+ * This is the main screen of the Christoffel's Menu app, displaying:
+ * - Restaurant logo and branding
+ * - Menu items in a scrollable list
+ * - Search functionality with debounced input
+ * - Sorting options (name, price ascending/descending)
+ * - Course average price badges
+ * - Navigation buttons to add items and filter
+ *
+ * Performance optimizations:
+ * - Debounced search (300ms delay)
+ * - Memoized filtering and sorting
+ * - Callback memoization for event handlers
+ * - FlatList virtualization for large lists
+ */
+
 import React, { useMemo, useState, useCallback, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, Pressable, SafeAreaView } from 'react-native';
+import { View, Text, FlatList, Pressable, SafeAreaView, Image } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
 import { useMenu } from '../context/MenuContext';
 import MenuItemCard from '../components/MenuItemCard';
 import { colors } from '../theme/colors';
 import SearchBar from '../components/SearchBar';
+import { styles } from '../styles/HomeScreens';
 
+/**
+ * Navigation props type for the Home screen
+ * Provides access to navigation object for screen transitions
+ */
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
+/**
+ * HomeScreen Component
+ *
+ * State management:
+ * - searchTerm: Current search input value
+ * - debouncedSearchTerm: Debounced search term for performance
+ * - sortOption: Current sorting preference
+ *
+ * Data flow:
+ * 1. Get menu items and functions from MenuContext
+ * 2. Apply search filtering with debouncing
+ * 3. Apply sorting based on user selection
+ * 4. Render filtered and sorted items
+ */
 export default function HomeScreen({ navigation }: Props) {
+  // Extract menu data and functions from context
   const { items, removeItem, averagesByCourse } = useMenu();
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
-  const [sortOption, setSortOption] = useState<'name' | 'priceAsc' | 'priceDesc'>('name');
+  // Local state for search and sorting functionality
+  const [searchTerm, setSearchTerm] = useState('');                    // Current search input
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');  // Debounced search term
+  const [sortOption, setSortOption] = useState<'name' | 'priceAsc' | 'priceDesc'>('name'); // Current sort option
 
   // Debounce search term to reduce filtering frequency
   useEffect(() => {
@@ -68,6 +107,7 @@ export default function HomeScreen({ navigation }: Props) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerArea}>
+        <Image source={require('../../assets/Bordeaux & Co..jpeg')} style={styles.logo} resizeMode="contain" />
         <Text style={styles.title}>Christoffel’s Menu</Text>
         <Text style={styles.subtitle}>Items: {totalItems}</Text>
         <View style={styles.badgeRow}>{averagesRow}</View>
@@ -129,68 +169,3 @@ export default function HomeScreen({ navigation }: Props) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.bg },
-  headerArea: { paddingTop: 12, paddingHorizontal: 16, paddingBottom: 8 },
-  title: { fontSize: 22, fontWeight: '800', color: colors.primary },
-  subtitle: { marginTop: 4, color: colors.text, fontWeight: '600' },
-  badgeRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 8 },
-  badge: {
-    backgroundColor: colors.white,
-    borderColor: colors.border,
-    borderWidth: 1,
-    borderRadius: 20,
-    paddingVertical: 6,
-    paddingHorizontal: 10,
-    marginRight: 8,
-    marginBottom: 8,
-  },
-  badgeText: { fontWeight: '600', color: colors.muted },
-  navButtons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 12,
-    marginHorizontal: 16,
-    marginBottom: 12,
-  },
-  navBtn: {
-    backgroundColor: colors.primary,
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    flex: 1,
-    alignItems: 'center',
-  },
-  navBtnText: {
-    color: colors.white,
-    fontWeight: '700',
-    fontSize: 16,
-  },
-  sortOptions: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 12,
-    marginHorizontal: 16,
-    marginBottom: 12,
-  },
-  sortBtn: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 10,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-  },
-  sortBtnActive: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
-  },
-  sortBtnText: {
-    color: colors.text,
-    fontWeight: '600',
-  },
-  sortBtnTextActive: {
-    color: colors.white,
-  },
-  empty: { textAlign: 'center', marginTop: 24, color: colors.muted },
-});

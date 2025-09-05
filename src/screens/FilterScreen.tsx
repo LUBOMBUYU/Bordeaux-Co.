@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useCallback } from 'react';
-import { View, Text, StyleSheet, FlatList, Pressable } from 'react-native';
+import { View, Text, FlatList, Pressable } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
@@ -7,6 +7,7 @@ import { useMenu } from '../context/MenuContext';
 import { Course } from '../types';
 import MenuItemCard from '../components/MenuItemCard';
 import { colors } from '../theme/colors';
+import { styles } from '../styles/FilterScreenStyles';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Filter'>;
 
@@ -50,38 +51,3 @@ export default function FilterScreen({ navigation }: Props) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.bg, paddingTop: 12 },
-  label: { color: colors.text, fontWeight: '700', marginHorizontal: 16, marginBottom: 6 },
-  pickerWrap: {
-    backgroundColor: colors.white,
-    borderColor: colors.border,
-    borderWidth: 1,
-    borderRadius: 10,
-    marginHorizontal: 16,
-    marginBottom: 12,
-  },
-  empty: { textAlign: 'center', marginTop: 24, color: colors.muted },
-  navButtons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 12,
-    marginHorizontal: 16,
-    marginTop: 16,
-    marginBottom: 16,
-  },
-  navBtn: {
-    backgroundColor: colors.primary,
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    flex: 1,
-    alignItems: 'center',
-  },
-  navBtnText: {
-    color: colors.white,
-    fontWeight: '700',
-    fontSize: 16,
-  },
-});

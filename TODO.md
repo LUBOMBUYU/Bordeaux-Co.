@@ -1,17 +1,14 @@
-# Optimization Tasks for Christoffel Menu App
+# TODO: Add Logo and Improve Restaurant App Styling
 
-## Completed
-- [x] Analyze codebase and identify optimization opportunities
-- [x] Create optimization plan
+## Completed Tasks
+- [x] Import Image component in HomeScreens.tsx
+- [x] Add logo Image component to header in HomeScreens.tsx
+- [x] Update headerArea style with background, border, shadow for restaurant feel
+- [x] Add logo style (100x60, centered)
+- [x] Center title and subtitle text
+- [x] Center badge row
 
-## In Progress
-- [ ] Optimize HomeScreen rendering and state management
-- [ ] Add debouncing to search input
-- [ ] Memoize callbacks passed to MenuItemCard
-- [ ] Optimize MenuItemCard component
-- [ ] Review and optimize other screens if needed
-- [ ] Test performance improvements
-
-## Pending
-- [ ] Add React Profiler for monitoring (optional)
-- [ ] Consider pagination for large lists (if applicable)
+## Followup Steps
+- [ ] Test the app to verify logo displays correctly
+- [ ] Adjust logo size or positioning if needed
+- [ ] Run the app and check for any errors

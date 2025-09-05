@@ -1,18 +1,51 @@
+/**
+ * Menu Context - Global State Management
+ *
+ * This context provides centralized state management for the menu application.
+ * It handles CRUD operations for menu items and calculates course averages.
+ *
+ * Key Features:
+ * - Add new menu items with auto-generated IDs
+ * - Remove items by ID
+ * - Calculate average prices per course
+ * - Memoized computations for performance
+ *
+ * Data Flow:
+ * 1. Components call addItem/removeItem functions
+ * 2. State updates trigger re-calculations
+ * 3. useMemo ensures expensive calculations only run when needed
+ * 4. All consuming components re-render with new data
+ */
+
 import React, { createContext, useContext, useMemo, useState } from 'react';
 import { MenuItem, Course } from '../types';
 
+/**
+ * Context value type definition
+ * Defines the shape of data and functions available to consuming components
+ */
 type MenuContextValue = {
-  items: MenuItem[];
-  addItem: (item: Omit<MenuItem, 'id'>) => void;
-  removeItem: (id: string) => void;
-  averagesByCourse: Record<Course, number | null>;
+  items: MenuItem[];                                    // Array of all menu items
+  addItem: (item: Omit<MenuItem, 'id'>) => void;        // Add new item (ID auto-generated)
+  removeItem: (id: string) => void;                     // Remove item by ID
+  averagesByCourse: Record<Course, number | null>;      // Average prices per course
 };
 
+/**
+ * Create the React Context
+ * This will hold the global menu state and functions
+ */
 const MenuContext = createContext<MenuContextValue | undefined>(undefined);
 
+/**
+ * Initial menu items for demonstration
+ * These are sample items that appear when the app first loads
+ * In a real app, these would typically come from an API or database
+ */
 const initialItems: MenuItem[] = [
-  // Seed with a couple of examples (not hardcoded at runtime; you can clear these)
+  // Sample starter item
   { id: '1', name: 'Tomato Bruschetta', description: 'Fresh tomatoes with basil on toast', course: 'Starters', price: 65 },
+  // Sample main course item
   { id: '2', name: 'Grilled Ribeye', description: 'Charred ribeye with herb butter', course: 'Mains', price: 220 },
 ];
 
