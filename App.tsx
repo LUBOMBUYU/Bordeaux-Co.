@@ -14,14 +14,14 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from './src/screens/HomeScreens';
-import AddItemScreen from './src/screens/AddItemScreen';
+import HomeScreen from './src/screens/HomeScreen/HomeScreen';
+import AddItemScreen from './src/screens/AddItemScreen/AddItemScreen';
 import FilterScreen from './src/screens/FilterScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import BasketScreen from './src/screens/BasketScreen';
 import { MenuProvider } from './src/context/MenuContext';
-import { UserProvider } from './src/context/UserContext';
+import { UserProvider } from './src/context/UserContext/UserContext';
 import { BasketProvider } from './src/context/BasketContext';
 import ErrorBoundary from './src/components/ErrorBoundary';
 
