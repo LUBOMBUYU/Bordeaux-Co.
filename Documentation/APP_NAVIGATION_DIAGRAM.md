@@ -20,6 +20,7 @@ NavigationContainer
     ├── HomeScreen (Main Menu)
     │   ├── Navigate to AddItem → AddItemScreen
     │   ├── Navigate to Filter → FilterScreen
+    │   ├── Navigate to Basket → BasketScreen
     │   └── Logout → LoginScreen
     │
     ├── AddItemScreen
@@ -27,9 +28,14 @@ NavigationContainer
     │   ├── Navigate to Filter → FilterScreen
     │   └── Back to Home → HomeScreen (goBack)
     │
-    └── FilterScreen
-        ├── Navigate to Home → HomeScreen
-        └── Navigate to AddItem → AddItemScreen
+    ├── FilterScreen
+    │   ├── Navigate to Home → HomeScreen
+    │   ├── Navigate to AddItem → AddItemScreen
+    │   └── Navigate to Basket → BasketScreen
+    │
+    └── BasketScreen
+        ├── Checkout Success → HomeScreen (replace)
+        └── Back to Previous → Previous Screen (goBack)
 ```
 
 ## Screen Flow Diagrams
@@ -120,15 +126,20 @@ NavigationContainer
 2. **Click "Sign Up"** → SignupScreen
 3. **Complete Registration** → HomeScreen
 4. **Explore Menu** → FilterScreen (optional)
-5. **Add Items** → AddItemScreen (if permitted)
-6. **Logout** → LoginScreen
+5. **Add Items to Basket** → BasketScreen
+6. **Manage Basket** → Adjust quantities, remove items
+7. **Checkout** → Payment simulation → HomeScreen
+8. **Add Items** → AddItemScreen (if permitted)
+9. **Logout** → LoginScreen
 
 ### Returning User Journey
 1. **App Launch** → LoginScreen
 2. **Enter Credentials** → HomeScreen
 3. **Browse Menu** → FilterScreen
-4. **Manage Items** → AddItemScreen (if permitted)
-5. **Logout** → LoginScreen
+4. **Add Items to Basket** → BasketScreen
+5. **Manage Basket** → Adjust quantities, checkout
+6. **Manage Items** → AddItemScreen (if permitted)
+7. **Logout** → LoginScreen
 
 ## Permission-Based Navigation
 
@@ -154,7 +165,7 @@ NavigationContainer
 
 ### Authentication Guards
 - Unauthenticated users redirected to LoginScreen
-- Login required for HomeScreen, AddItemScreen, FilterScreen
+- Login required for HomeScreen, AddItemScreen, FilterScreen, BasketScreen
 
 ### Permission Guards
 - Role-based access control implemented in components

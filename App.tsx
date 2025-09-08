@@ -19,8 +19,10 @@ import AddItemScreen from './src/screens/AddItemScreen';
 import FilterScreen from './src/screens/FilterScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import SignupScreen from './src/screens/SignupScreen';
+import BasketScreen from './src/screens/BasketScreen';
 import { MenuProvider } from './src/context/MenuContext';
 import { UserProvider } from './src/context/UserContext';
+import { BasketProvider } from './src/context/BasketContext';
 import ErrorBoundary from './src/components/ErrorBoundary';
 
 /**
@@ -33,6 +35,7 @@ export type RootStackParamList = {
   Home: undefined;        // Home screen - no parameters needed
   AddItem: undefined;     // Add item screen - no parameters needed
   Filter: undefined;      // Filter screen - no parameters needed
+  Basket: undefined;      // Basket screen - no parameters needed
 };
 
 /**
@@ -57,6 +60,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
  *                     └── FilterScreen
  */
 export default function App() {
+  console.log('App component rendering started');
   return (
     // Error boundary catches any JavaScript errors in child components
     <ErrorBoundary>
@@ -64,8 +68,10 @@ export default function App() {
       <UserProvider>
         {/* MenuProvider provides menu state to all child components */}
         <MenuProvider>
-          {/* NavigationContainer manages navigation state and deep linking */}
-          <NavigationContainer>
+          {/* BasketProvider provides basket state */}
+          <BasketProvider>
+            {/* NavigationContainer manages navigation state and deep linking */}
+            <NavigationContainer>
             {/* Stack Navigator handles screen transitions with native animations */}
             <Stack.Navigator initialRouteName="Login">
               {/* Login screen - user authentication */}
@@ -98,8 +104,15 @@ export default function App() {
                 component={FilterScreen}
                 options={{ title: 'Filter by Course' }}
               />
+              {/* Basket screen - view and manage basket */}
+              <Stack.Screen
+                name="Basket"
+                component={BasketScreen}
+                options={{ title: 'Your Basket' }}
+              />
             </Stack.Navigator>
-          </NavigationContainer>
+            </NavigationContainer>
+          </BasketProvider>
         </MenuProvider>
       </UserProvider>
     </ErrorBoundary>

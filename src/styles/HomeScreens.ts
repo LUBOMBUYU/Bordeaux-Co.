@@ -77,5 +77,24 @@ export const styles = StyleSheet.create({
   sortBtnTextActive: {
     color: colors.white,
   },
+  menuContainer: {
+    flex: 1,
+    backgroundColor: colors.bg,
+  },
+  menuList: {
+    paddingHorizontal: 8,
+    paddingBottom: 24,
+    paddingTop: 8,
+  },
+  columnWrapper: {
+    justifyContent: 'space-between',
+    marginHorizontal: 8,
+  },
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 50,
+  },
   empty: { textAlign: 'center', marginTop: 24, color: colors.muted },
 });

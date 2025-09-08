@@ -8,13 +8,15 @@
 /**
  * Course Types
  *
- * Defines the three main course categories for menu items.
- * These represent the traditional structure of a restaurant menu:
+ * Defines the five main course categories for menu items.
+ * These represent the complete structure of a restaurant menu:
  * - Starters: Appetizers and first courses
  * - Mains: Main dishes and entrees
- * - Dessert: Sweet dishes and final courses
+ * - Side Dishes: Accompaniments and sides
+ * - Desserts: Sweet dishes and final courses
+ * - Drinks: Beverages and refreshments
  */
-export type Course = 'Starters' | 'Mains' | 'Dessert';
+export type Course = 'Starters' | 'Mains' | 'Side Dishes' | 'Desserts' | 'Drinks';
 
 /**
  * Menu Item Interface
@@ -28,6 +30,7 @@ export interface MenuItem {
   description: string;  // Detailed description of the dish
   course: Course;       // Which course category this item belongs to
   price: number;        // Price in South African Rand (ZAR)
+  imageUrl?: string;    // Optional image URL or path for the menu item
 }
 
 /**
@@ -49,6 +52,7 @@ export interface User {
   id: string;           // Unique identifier
   name: string;         // Display name of the user
   userCode: string;     // Distinct user code for login
+  password: string;     // Password for secure authentication
   type: UserType;       // User type determining permissions
 }
 
@@ -60,8 +64,8 @@ export interface User {
 export type UserContextValue = {
   currentUser: User | null;                    // Currently logged-in user
   users: User[];                              // Array of all users
-  login: (userCode: string) => boolean;       // Login function with user code
-  signup: (name: string, userCode: string) => boolean; // Signup function
+  login: (userCode: string, password: string) => boolean; // Login function with user code and password
+  signup: (name: string, userCode: string, password: string) => boolean; // Signup function
   logout: () => void;                         // Logout function
   canAddItem: () => boolean;                  // Check if user can add items
   canEditItem: () => boolean;                 // Check if user can edit items

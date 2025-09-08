@@ -17,6 +17,7 @@
 export const colors = {
   // Brand Colors
   primary: '#FFD700',     // Gold - main brand color for titles and primary actions
+  secondary: '#6c757d',   // Gray - secondary color for basket button
   accent: '#FFA500',      // Orange - secondary brand color for accents
 
   // Background Colors

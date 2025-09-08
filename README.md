@@ -10,11 +10,15 @@ A modern, elegant restaurant menu management application built with React Native
 
 ### 🔐 User-Based Login System
 - **Role-Based Access**: Three user types - Owner, Employee, and Customer
-- **Secure Login**: Username and password authentication with password hashing (SHA-256).
-- **Permission Management**: Granular access levels for menu management.
+- **Secure Login**: User code and password authentication
+- **Permission Management**: Granular access levels for menu management
 - **Owner Access**: Full control over menu items (add, edit, remove)
 - **Employee Access**: Can add items but cannot modify prices
 - **Customer Access**: Read-only access to menu browsing
+- **Sample Credentials**:
+  - Owner: `OWNER001` / `owner123`
+  - Employee: `EMP001` / `emp123`
+  - Customer: `CUST001` / `cust123`
 
 ### 🏠 Home Screen
 - **Menu Display**: View all menu items in a clean, scrollable list
@@ -32,6 +36,14 @@ A modern, elegant restaurant menu management application built with React Native
 ### 🔍 Filter by Course
 - **Course Filtering**: Filter menu items by specific courses
 - **Dynamic Updates**: Real-time filtering with instant results
+
+### 🛒 Basket/Cart System
+- **Add to Basket**: Add menu items to shopping basket from any screen
+- **Quantity Management**: Increase/decrease item quantities with +/- buttons
+- **Real-time Total**: Automatic calculation of basket total price
+- **Remove Items**: Remove items from basket with confirmation
+- **Checkout Process**: Simulated payment process with success confirmation
+- **Basket Persistence**: Basket state maintained during navigation
 
 ### 🎨 Design & UX
 - **Dark Theme**: Modern black background with gold accents

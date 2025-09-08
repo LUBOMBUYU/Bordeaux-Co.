@@ -25,13 +25,13 @@ import { User, UserContextValue, UserType } from '../types';
  */
 const initialUsers: User[] = [
   // Owner user
-  { id: '1', name: 'Christoffel', userCode: 'OWNER001', type: 'owner' },
+  { id: '1', name: 'Christoffel', userCode: 'OWNER001', password: 'owner123', type: 'owner' },
   // Sample employee users
-  { id: '2', name: 'Employee 1', userCode: 'EMP001', type: 'employee' },
-  { id: '3', name: 'Employee 2', userCode: 'EMP002', type: 'employee' },
+  { id: '2', name: 'Employee 1', userCode: 'EMP001', password: 'emp123', type: 'employee' },
+  { id: '3', name: 'Employee 2', userCode: 'EMP002', password: 'emp123', type: 'employee' },
   // Sample customer users
-  { id: '4', name: 'Customer 1', userCode: 'CUST001', type: 'customer' },
-  { id: '5', name: 'Customer 2', userCode: 'CUST002', type: 'customer' },
+  { id: '4', name: 'Customer 1', userCode: 'CUST001', password: 'cust123', type: 'customer' },
+  { id: '5', name: 'Customer 2', userCode: 'CUST002', password: 'cust123', type: 'customer' },
 ];
 
 /**
@@ -44,8 +44,8 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [users] = useState<User[]>(initialUsers);
 
-  const login = (userCode: string): boolean => {
-    const user = users.find(u => u.userCode === userCode);
+  const login = (userCode: string, password: string): boolean => {
+    const user = users.find(u => u.userCode === userCode && u.password === password);
     if (user) {
       setCurrentUser(user);
       return true;
@@ -53,7 +53,7 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     return false;
   };
 
-  const signup = (name: string, userCode: string): boolean => {
+  const signup = (name: string, userCode: string, password: string): boolean => {
     const exists = users.some(u => u.userCode === userCode);
     if (exists) {
       return false;
@@ -62,6 +62,7 @@ export const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
       id: (users.length + 1).toString(),
       name,
       userCode,
+      password,
       type: 'customer' as const,
     };
     setCurrentUser(newUser);

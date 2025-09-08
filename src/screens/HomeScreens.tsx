@@ -153,6 +153,12 @@ export default function HomeScreen({ navigation }: Props) {
           <Text style={styles.navBtnText}>Filter by Course</Text>
         </Pressable>
         <Pressable
+          style={[styles.navBtn, { backgroundColor: colors.secondary }]}
+          onPress={() => navigation.navigate('Basket')}
+        >
+          <Text style={styles.navBtnText}>View Basket</Text>
+        </Pressable>
+        <Pressable
           style={[styles.navBtn, { backgroundColor: colors.danger }]}
           onPress={handleLogout}
         >
@@ -181,21 +187,28 @@ export default function HomeScreen({ navigation }: Props) {
         </Pressable>
       </View>
 
-      <FlatList
-        data={filteredItems}
-        keyExtractor={item => item.id}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 24 }}
-        initialNumToRender={10}
-        maxToRenderPerBatch={10}
-        windowSize={21}
-        removeClippedSubviews={true}
-        renderItem={({ item }) => (
-          <MenuItemCard item={item} onRemove={handleRemoveItem} />
-        )}
-        ListEmptyComponent={
-          <Text style={styles.empty}>No items found.</Text>
-        }
-      />
+      <View style={styles.menuContainer}>
+        <FlatList
+          data={filteredItems}
+          keyExtractor={item => item.id}
+          contentContainerStyle={styles.menuList}
+          initialNumToRender={12}
+          maxToRenderPerBatch={12}
+          windowSize={21}
+          removeClippedSubviews={true}
+          numColumns={2}
+          columnWrapperStyle={styles.columnWrapper}
+          renderItem={({ item }) => (
+            <MenuItemCard item={item} onRemove={handleRemoveItem} />
+          )}
+          ListEmptyComponent={
+            <View style={styles.emptyContainer}>
+              <Text style={styles.empty}>No items found.</Text>
+            </View>
+          }
+          showsVerticalScrollIndicator={true}
+        />
+      </View>
     </SafeAreaView>
   );
 }

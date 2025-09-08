@@ -23,12 +23,23 @@ This document provides an overview of all the screens in the project, describing
 - Includes user info and logout option.
 
 ## 4. LoginScreen.tsx
-- Screen for user login.
-- Allows users to enter their user code to log in.
-- Validates user code and navigates to Home on success.
-- Displays error messages for invalid login.
+- Screen for user login with password authentication.
+- Allows users to enter their user code and password to log in.
+- Validates both user code and password against stored credentials.
+- Navigates to Home on successful authentication.
+- Displays error messages for invalid login attempts.
+- Includes link to signup for new users.
 
-## 5. SignupScreen.tsx
+## 5. BasketScreen.tsx
+- Screen for managing shopping basket/cart.
+- Displays all items added to basket with quantities.
+- Allows users to increase/decrease item quantities with +/- buttons.
+- Shows real-time total price calculation.
+- Provides option to remove items from basket.
+- Includes checkout button for payment simulation.
+- Navigates back to Home after successful checkout.
+
+## 6. SignupScreen.tsx
 - Screen for new user signup.
 - Form to enter name and create a user code.
 - Validates uniqueness of user code.

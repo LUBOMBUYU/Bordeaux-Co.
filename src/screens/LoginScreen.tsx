@@ -2,13 +2,13 @@
  * Login Screen Component
  *
  * This screen allows users to log in using their distinct user codes.
- * It displays available user codes for demonstration purposes.
+ * Provides a secure login interface without exposing user information.
  *
  * Features:
  * - User code input field
  * - Login button with validation
- * - Display of available user codes
  * - Error handling for invalid codes
+ * - Secure authentication without data exposure
  */
 
 import React, { useState } from 'react';
@@ -37,6 +37,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
  */
 export default function LoginScreen({ navigation }: Props) {
   const [userCode, setUserCode] = useState('');
+  const [password, setPassword] = useState('');
   const { login, users } = useUser();
 
   const handleLogin = () => {
@@ -44,12 +45,16 @@ export default function LoginScreen({ navigation }: Props) {
       Alert.alert('Error', 'Please enter a user code');
       return;
     }
+    if (!password.trim()) {
+      Alert.alert('Error', 'Please enter a password');
+      return;
+    }
 
-    const success = login(userCode.trim().toUpperCase());
+    const success = login(userCode.trim().toUpperCase(), password.trim());
     if (success) {
       navigation.replace('Home');
     } else {
-      Alert.alert('Error', 'Invalid user code. Please try again.');
+      Alert.alert('Error', 'Invalid user code or password. Please try again.');
     }
   };
 
@@ -70,7 +75,7 @@ export default function LoginScreen({ navigation }: Props) {
           </Text>
         </View>
 
-        <View style={{ marginBottom: 30 }}>
+        <View style={{ marginBottom: 20 }}>
           <Text style={{ fontSize: 16, color: colors.text, marginBottom: 10 }}>
             Enter User Code:
           </Text>
@@ -84,11 +89,34 @@ export default function LoginScreen({ navigation }: Props) {
               backgroundColor: colors.card,
               color: colors.text,
             }}
-            placeholder="e.g., OWNER001"
+            placeholder="e.g., USER123"
             placeholderTextColor={colors.muted}
             value={userCode}
             onChangeText={setUserCode}
             autoCapitalize="characters"
+            autoCorrect={false}
+          />
+        </View>
+
+        <View style={{ marginBottom: 30 }}>
+          <Text style={{ fontSize: 16, color: colors.text, marginBottom: 10 }}>
+            Enter Password:
+          </Text>
+          <TextInput
+            style={{
+              borderWidth: 1,
+              borderColor: colors.border,
+              borderRadius: 8,
+              padding: 12,
+              fontSize: 16,
+              backgroundColor: colors.card,
+              color: colors.text,
+            }}
+            placeholder="Enter your password"
+            placeholderTextColor={colors.muted}
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={true}
             autoCorrect={false}
           />
         </View>
@@ -113,17 +141,6 @@ export default function LoginScreen({ navigation }: Props) {
             Don't have an account? Sign up here
           </Text>
         </Pressable>
-
-        <View style={{ marginTop: 20 }}>
-          <Text style={{ fontSize: 16, fontWeight: 'bold', color: colors.text, marginBottom: 10 }}>
-            Available User Codes (Demo):
-          </Text>
-          {users.map(user => (
-            <Text key={user.id} style={{ fontSize: 14, color: colors.muted, marginBottom: 5 }}>
-              {user.name} ({user.type}): {user.userCode}
-            </Text>
-          ))}
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
