@@ -136,7 +136,16 @@ This document explains the different components in the project and how they are 
 - Includes role-based permission checks.
 - Used throughout the app to access menu data and functions.
 
-## 5. UserContext.tsx
+## 5. BasketContext.tsx
+- **Location**: `src/context/BasketContext.tsx`
+- **Styles**: No styles (logic-only component)
+- A React Context for managing shopping basket/cart state.
+- Handles adding items to basket, updating quantities, and removing items.
+- Calculates real-time basket total price.
+- Manages basket persistence during navigation.
+- Provides basket operations throughout the app.
+
+## 6. UserContext.tsx
 - **Location**: `src/context/UserContext.tsx`
 - **Styles**: No styles (logic-only component)
 - A React Context for managing user authentication and permissions.
@@ -391,7 +400,56 @@ This document explains the different components in the project and how they are 
 - No permission checks - accessible to all users
 - User type determined by successful login
 
-## 10. SignupScreen.tsx
+## 10. BasketScreen.tsx
+- **Location**: `src/screens/BasketScreen.tsx`
+- **Styles**: `src/styles/BasketScreenStyles.ts`
+- **Type**: Functional Component with navigation
+- **Purpose**: Screen for managing shopping basket/cart with quantity controls and checkout
+
+### State Management:
+- No local state - uses BasketContext for all basket operations
+
+### Hooks Used:
+- `useBasket()` - Accesses basket context for items, total, and operations
+- `useNavigation()` - Accesses navigation for back navigation
+
+### Functions:
+- `handleIncreaseQuantity(itemId: string)` - Increases item quantity by 1
+- `handleDecreaseQuantity(itemId: string)` - Decreases item quantity by 1
+- `handleRemoveItem(itemId: string)` - Removes item from basket with confirmation
+- `handleCheckout()` - Processes payment simulation and clears basket
+
+### UI Components:
+- **SafeAreaView**: Main container with safe area handling
+- **Header Container View**: Top section with basket title and back navigation
+- **Basket Title Text**: "Shopping Basket" with bold styling
+- **Empty Basket View**: Display when basket is empty with message and icon
+- **FlatList**: Displays basket items with quantity controls
+- **Basket Item View**: Individual item display with name, price, quantity controls
+- **Quantity Controls**: +/- buttons for adjusting item quantities
+- **Remove Button**: Trash icon button for removing items
+- **Total Section View**: Bottom section showing basket total
+- **Total Text**: "Total: R{total}" with bold styling
+- **Checkout Button**: Primary action button for payment processing
+
+### Animations:
+- No animations implemented
+
+### Basket Operations:
+- **Quantity Management**: Real-time updates to item quantities
+- **Price Calculation**: Automatic total recalculation on quantity changes
+- **Item Removal**: Confirmation dialog before removing items
+- **Checkout Process**: Simulated payment with success message
+
+### Navigation:
+- **Back Navigation**: Returns to previous screen (Home or Filter)
+- **Checkout Success**: Navigation back to Home screen with basket cleared
+
+### Permission System:
+- No permission checks - accessible to all authenticated users
+- Basket functionality available to all user types
+
+## 11. SignupScreen.tsx
 - **Location**: `src/screens/SignupScreen.tsx`
 - **Styles**: `src/styles/SignupScreenStyles.ts` (shared with LoginScreen)
 - **Type**: Functional Component with navigation
@@ -509,14 +567,17 @@ This document explains the different components in the project and how they are 
 App.tsx (Root)
 ├── UserProvider (Context)
 │   ├── MenuProvider (Context)
-│   │   ├── Stack.Navigator (Navigation)
-│   │   │   ├── LoginScreen
-│   │   │   ├── SignupScreen
-│   │   │   ├── HomeScreens
-│   │   │   ├── AddItemScreen
-│   │   │   └── FilterScreen
-│   │   │       └── SearchBar
-│   │   └── MenuItemCard (used in HomeScreens and FilterScreen)
+│   │   ├── BasketProvider (Context)
+│   │   │   ├── Stack.Navigator (Navigation)
+│   │   │   │   ├── LoginScreen
+│   │   │   │   ├── SignupScreen
+│   │   │   │   ├── HomeScreens
+│   │   │   │   ├── AddItemScreen
+│   │   │   │   ├── FilterScreen
+│   │   │   │   ├── BasketScreen
+│   │   │   │   └── SearchBar
+│   │   │   └── MenuItemCard (used in HomeScreens and FilterScreen)
+│   │   └── ErrorBoundary (Error handling)
 └── ErrorBoundary (Error handling)
 ```
 
