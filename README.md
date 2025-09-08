@@ -10,8 +10,8 @@ A modern, elegant restaurant menu management application built with React Native
 
 ### 🔐 User-Based Login System
 - **Role-Based Access**: Three user types - Owner, Employee, and Customer
-- **Secure Login**: User code-based authentication system
-- **Permission Management**: Different access levels for menu management
+- **Secure Login**: Username and password authentication with password hashing (SHA-256).
+- **Permission Management**: Granular access levels for menu management.
 - **Owner Access**: Full control over menu items (add, edit, remove)
 - **Employee Access**: Can add items but cannot modify prices
 - **Customer Access**: Read-only access to menu browsing
@@ -110,13 +110,12 @@ interface MenuItem {
 
 #### UserContext
 ```typescript
-// User authentication and role management
+// User authentication and role management with secure password handling
 const UserContextValue = {
   user: User | null,           // Current logged-in user
-  login: (userCode: string) => boolean,  // Login with user code
-  signup: (name: string, userCode: string) => boolean,  // Create new user account
+  login: (username: string, password: string) => Promise<boolean>,  // Secure login
+  signup: (name: string, username: string, password: string) => Promise<boolean>,  // Create new user with hashed password
   logout: () => void,          // Logout current user
-  hasPermission: (action: string) => boolean  // Check user permissions
 }
 ```
 

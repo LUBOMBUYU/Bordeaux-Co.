@@ -45,73 +45,92 @@ export default function AddItemScreen({ navigation }: Props) {
   }, [navigation]);
 
   return (
-    <KeyboardAvoidingView behavior={Platform.select({ ios: 'padding', android: undefined })} style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.label}>Dish Name</Text>
-        <TextInput
-          style={styles.input}
-          value={name}
-          onChangeText={setName}
-          placeholder="e.g. Tomato Bruschetta"
-          placeholderTextColor={colors.muted}
-        />
+    <KeyboardAvoidingView
+      behavior={Platform.select({ ios: 'padding', android: undefined })}
+      style={styles.container}
+    >
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 32 }}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Form Container */}
+        <View style={styles.formContainer}>
+          <Text style={styles.sectionTitle}>Add New Menu Item</Text>
 
-        <Text style={styles.label}>Description</Text>
-        <TextInput
-          style={[styles.input, styles.multiline]}
-          value={desc}
-          onChangeText={setDesc}
-          placeholder="Short description..."
-          placeholderTextColor={colors.muted}
-          multiline
-        />
+          <Text style={styles.label}>Dish Name</Text>
+          <TextInput
+            style={styles.input}
+            value={name}
+            onChangeText={setName}
+            placeholder="e.g. Tomato Bruschetta"
+            placeholderTextColor={colors.muted}
+            autoCapitalize="words"
+            autoCorrect={false}
+          />
 
-        <Text style={styles.label}>Price (ZAR)</Text>
-        <TextInput
-          style={styles.input}
-          value={price}
-          onChangeText={setPrice}
-          placeholder="e.g. 89"
-          placeholderTextColor={colors.muted}
-          keyboardType="numeric"
-          editable={canEditPrice()}
-        />
-        {!canEditPrice() && (
-          <Text style={{ color: colors.muted, fontSize: 12, marginTop: 4 }}>
-            Only owners can edit prices
-          </Text>
-        )}
+          <Text style={styles.label}>Description</Text>
+          <TextInput
+            style={[styles.input, styles.multiline]}
+            value={desc}
+            onChangeText={setDesc}
+            placeholder="Describe the dish, ingredients, and any special notes..."
+            placeholderTextColor={colors.muted}
+            multiline
+            maxLength={200}
+          />
 
-        <Text style={styles.label}>Course</Text>
-        <View style={styles.pickerWrap}>
-          <Picker
-            selectedValue={course}
-            onValueChange={(v) => setCourse(v as Course)}
-          >
-            <Picker.Item label="Starters" value="Starters" />
-            <Picker.Item label="Mains" value="Mains" />
-            <Picker.Item label="Dessert" value="Dessert" />
-          </Picker>
+          <Text style={styles.label}>Price (ZAR)</Text>
+          <TextInput
+            style={[styles.input, canEditPrice() ? {} : styles.inputDisabled]}
+            value={price}
+            onChangeText={setPrice}
+            placeholder="e.g. 89.99"
+            placeholderTextColor={colors.muted}
+            keyboardType="decimal-pad"
+            editable={canEditPrice()}
+            maxLength={8}
+          />
+          {!canEditPrice() && (
+            <Text style={styles.permissionText}>
+              Only owners can edit prices
+            </Text>
+          )}
+
+          <Text style={styles.label}>Course Category</Text>
+          <View style={styles.pickerWrap}>
+            <Picker
+              selectedValue={course}
+              onValueChange={(v) => setCourse(v as Course)}
+              style={{ color: colors.text }}
+            >
+              <Picker.Item label="🍽️ Starters" value="Starters" />
+              <Picker.Item label="🍖 Mains" value="Mains" />
+              <Picker.Item label="🍰 Dessert" value="Dessert" />
+            </Picker>
+          </View>
         </View>
 
-        <Animated.View style={{ transform: [{ scale }], marginTop: 16 }}>
-          <Pressable
-            style={styles.saveBtn}
-            onPressIn={() => animate(0.98)}
-            onPressOut={() => animate(1)}
-            onPress={onSave}
-          >
-            <Text style={styles.saveText}>Save Item</Text>
-          </Pressable>
-        </Animated.View>
+        {/* Action Buttons */}
+        <View style={styles.actionContainer}>
+          <Animated.View style={{ transform: [{ scale }] }}>
+            <Pressable
+              style={styles.saveBtn}
+              onPressIn={() => animate(0.98)}
+              onPressOut={() => animate(1)}
+              onPress={onSave}
+            >
+              <Text style={styles.saveText}>Save Menu Item</Text>
+            </Pressable>
+          </Animated.View>
 
-        <View style={styles.navButtons}>
-          <Pressable style={styles.backBtn} onPress={handleBackPress}>
-            <Text style={styles.backText}>Back to Home</Text>
-          </Pressable>
-          <Pressable style={styles.navBtn} onPress={() => navigation.navigate('Filter')}>
-            <Text style={styles.navBtnText}>Filter</Text>
-          </Pressable>
+          <View style={styles.navButtons}>
+            <Pressable style={styles.backBtn} onPress={handleBackPress}>
+              <Text style={styles.backText}>Back to Home</Text>
+            </Pressable>
+            <Pressable style={styles.navBtn} onPress={() => navigation.navigate('Filter')}>
+              <Text style={styles.navBtnText}>Browse Menu</Text>
+            </Pressable>
+          </View>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

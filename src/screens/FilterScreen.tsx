@@ -23,12 +23,16 @@ export default function FilterScreen({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Select Course</Text>
+      <Text style={styles.label}>Select Course Category</Text>
       <View style={styles.pickerWrap}>
-        <Picker selectedValue={course} onValueChange={handleCourseChange}>
-          <Picker.Item label="Starters" value="Starters" />
-          <Picker.Item label="Mains" value="Mains" />
-          <Picker.Item label="Dessert" value="Dessert" />
+        <Picker
+          selectedValue={course}
+          onValueChange={handleCourseChange}
+          style={{ color: colors.text }}
+        >
+          <Picker.Item label="🍽️ Starters" value="Starters" />
+          <Picker.Item label="🍖 Mains" value="Mains" />
+          <Picker.Item label="🍰 Dessert" value="Dessert" />
         </Picker>
       </View>
 
@@ -42,10 +46,10 @@ export default function FilterScreen({ navigation }: Props) {
 
       <View style={styles.navButtons}>
         <Pressable style={styles.navBtn} onPress={() => navigation.navigate('Home')}>
-          <Text style={styles.navBtnText}>Home</Text>
+          <Text style={styles.navBtnText}>Back to Home</Text>
         </Pressable>
         <Pressable style={styles.navBtn} onPress={() => navigation.navigate('AddItem')}>
-          <Text style={styles.navBtnText}>Add Item</Text>
+          <Text style={styles.navBtnText}>Add New Item</Text>
         </Pressable>
       </View>
     </View>

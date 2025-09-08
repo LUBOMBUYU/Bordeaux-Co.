@@ -126,7 +126,7 @@ export default function HomeScreen({ navigation }: Props) {
       <View style={styles.headerArea}>
         <Image source={require('../../assets/Bordeaux_and_Co.jpeg')} style={styles.logo} resizeMode="contain" />
         <Text style={styles.title}>Christoffel’s Menu</Text>
-        <Text style={styles.subtitle}>Items: {totalItems}</Text>
+        <Text style={styles.subtitle}>Total Items: {totalItems}</Text>
         {currentUser && (
           <Text style={{ color: colors.muted, fontSize: 14, marginTop: 4 }}>
             Logged in as: {currentUser.name} ({currentUser.type})
@@ -143,14 +143,14 @@ export default function HomeScreen({ navigation }: Props) {
             style={styles.navBtn}
             onPress={() => navigation.navigate('AddItem')}
           >
-            <Text style={styles.navBtnText}>Add Item</Text>
+            <Text style={styles.navBtnText}>Add New Item</Text>
           </Pressable>
         )}
         <Pressable
           style={styles.navBtn}
           onPress={() => navigation.navigate('Filter')}
         >
-          <Text style={styles.navBtnText}>Filter</Text>
+          <Text style={styles.navBtnText}>Filter by Course</Text>
         </Pressable>
         <Pressable
           style={[styles.navBtn, { backgroundColor: colors.danger }]}
@@ -165,19 +165,19 @@ export default function HomeScreen({ navigation }: Props) {
           style={[styles.sortBtn, sortOption === 'name' && styles.sortBtnActive]}
           onPress={() => setSortOption('name')}
         >
-          <Text style={[styles.sortBtnText, sortOption === 'name' && styles.sortBtnTextActive]}>Name</Text>
+          <Text style={[styles.sortBtnText, sortOption === 'name' && styles.sortBtnTextActive]}>Sort by Name</Text>
         </Pressable>
         <Pressable
           style={[styles.sortBtn, sortOption === 'priceAsc' && styles.sortBtnActive]}
           onPress={() => setSortOption('priceAsc')}
         >
-          <Text style={[styles.sortBtnText, sortOption === 'priceAsc' && styles.sortBtnTextActive]}>Price ↑</Text>
+          <Text style={[styles.sortBtnText, sortOption === 'priceAsc' && styles.sortBtnTextActive]}>Sort by Price ↑</Text>
         </Pressable>
         <Pressable
           style={[styles.sortBtn, sortOption === 'priceDesc' && styles.sortBtnActive]}
           onPress={() => setSortOption('priceDesc')}
         >
-          <Text style={[styles.sortBtnText, sortOption === 'priceDesc' && styles.sortBtnTextActive]}>Price ↓</Text>
+          <Text style={[styles.sortBtnText, sortOption === 'priceDesc' && styles.sortBtnTextActive]}>Sort by Price ↓</Text>
         </Pressable>
       </View>
 

@@ -2,9 +2,28 @@ import React from 'react';
 import { renderHook, act } from '@testing-library/react-hooks';
 import { MenuProvider, useMenu } from '../src/context/MenuContext';
 import { MenuItem } from '../src/types';
+import { UserProvider } from '../src/context/UserContext';
+
+// Mock the useUser hook to return an owner user for testing
+jest.mock('../src/context/UserContext', () => ({
+  ...jest.requireActual('../src/context/UserContext'),
+  useUser: () => ({
+    currentUser: { id: '1', name: 'Test Owner', userCode: 'owner123', type: 'owner' },
+    users: [],
+    login: jest.fn(),
+    signup: jest.fn(),
+    logout: jest.fn(),
+    canAddItem: () => true,
+    canEditItem: () => true,
+    canEditPrice: () => true,
+    canRemoveItem: () => true,
+  }),
+}));
 
 const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <MenuProvider>{children}</MenuProvider>
+  <UserProvider>
+    <MenuProvider>{children}</MenuProvider>
+  </UserProvider>
 );
 
 describe('MenuContext', () => {
