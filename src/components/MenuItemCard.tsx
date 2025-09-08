@@ -4,7 +4,7 @@ import { MenuItem } from '../types';
 import { colors } from '../theme/colors';
 import { formatZAR } from '../utils/currency';
 import { styles } from '../styles/MenuItemCardStyles';
-import { useUser } from '../context/UserContext';
+import { useUser } from '../context/UserContext/UserContext';
 import { useBasket } from '../context/BasketContext';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -60,17 +60,10 @@ const MenuItemCardComponent: React.FC<Props> = ({ item, onRemove }) => {
         <Text style={styles.desc} numberOfLines={2}>{item.description}</Text>
 
         <Pressable
-          style={{
-            backgroundColor: colors.primary,
-            paddingVertical: 6,
-            paddingHorizontal: 12,
-            borderRadius: 6,
-            alignItems: 'center',
-            marginTop: 10,
-          }}
+          style={styles.addToBasketBtn}
           onPress={handleAddToBasket}
         >
-          <Text style={{ color: colors.white, fontWeight: '600' }}>Add to Basket</Text>
+          <Text style={styles.addToBasketText}>Add to Basket</Text>
         </Pressable>
 
         {onRemove && canRemoveItem() ? (

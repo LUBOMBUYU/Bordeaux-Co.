@@ -15,7 +15,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable, Alert, SafeAreaView, ScrollView, Image } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
-import { useUser } from '../context/UserContext';
+import { useUser } from '../context/UserContext/UserContext';
 import { colors } from '../theme/colors';
 
 /**

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable, Alert, SafeAreaView, ScrollView } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
-import { useUser } from '../context/UserContext';
+import { useUser } from '../context/UserContext/UserContext';
 import { styles } from '../styles/SignupScreenStyles';
 import { colors } from '../theme/colors';
 
@@ -13,13 +13,15 @@ export default function SignupScreen({ navigation }: Props) {
   const [userCode, setUserCode] = useState('');
   const { signup } = useUser();
 
+  const [password, setPassword] = React.useState('');
+
   const handleSignup = () => {
-    if (!name.trim() || !userCode.trim()) {
-      Alert.alert('Error', 'Please enter both name and user code');
+    if (!name.trim() || !userCode.trim() || !password.trim()) {
+      Alert.alert('Error', 'Please enter name, user code, and password');
       return;
     }
 
-    const success = signup(name.trim(), userCode.trim().toUpperCase());
+    const success = signup(name.trim(), userCode.trim().toUpperCase(), password.trim());
     if (success) {
       Alert.alert('Success', 'Signup successful! Please login.');
       navigation.replace('Login');
@@ -53,7 +55,7 @@ export default function SignupScreen({ navigation }: Props) {
           />
         </View>
 
-        <View style={{ marginBottom: 30 }}>
+        <View style={{ marginBottom: 20 }}>
           <Text style={styles.label}>User Code:</Text>
           <TextInput
             style={styles.input}
@@ -62,6 +64,19 @@ export default function SignupScreen({ navigation }: Props) {
             value={userCode}
             onChangeText={setUserCode}
             autoCapitalize="characters"
+            autoCorrect={false}
+          />
+        </View>
+
+        <View style={{ marginBottom: 30 }}>
+          <Text style={styles.label}>Password:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter a password"
+            placeholderTextColor={colors.muted}
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={true}
             autoCorrect={false}
           />
         </View>

@@ -1,3 +1,4 @@
+
 /**
  * Home Screen Component
  *
@@ -19,13 +20,14 @@
 import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import { View, Text, FlatList, Pressable, SafeAreaView, Image, Alert } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../App';
-import { useMenu } from '../context/MenuContext';
-import { useUser } from '../context/UserContext';
-import MenuItemCard from '../components/MenuItemCard';
-import { colors } from '../theme/colors';
-import SearchBar from '../components/SearchBar';
-import { styles } from '../styles/HomeScreens';
+import { RootStackParamList } from '../../../App';
+import { useMenu } from '../../context/MenuContext';
+import { useUser } from '../../context/UserContext/UserContext';
+import MenuItemCard from '../../components/MenuItemCard';
+import { colors } from '../../theme/colors';
+import SearchBar from '../../components/SearchBar';
+import { styles } from '../../styles/HomeScreenStyles';
+import { MenuItem } from '../../types';
 
 /**
  * Navigation props type for the Home screen
@@ -124,7 +126,7 @@ export default function HomeScreen({ navigation }: Props) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerArea}>
-        <Image source={require('../../assets/Bordeaux_and_Co.jpeg')} style={styles.logo} resizeMode="contain" />
+        <Image source={require('../../../assets/Bordeaux_and_Co.jpeg')} style={styles.logo} resizeMode="contain" />
         <Text style={styles.title}>Christoffel’s Menu</Text>
         <Text style={styles.subtitle}>Total Items: {totalItems}</Text>
         {currentUser && (
@@ -190,7 +192,7 @@ export default function HomeScreen({ navigation }: Props) {
       <View style={styles.menuContainer}>
         <FlatList
           data={filteredItems}
-          keyExtractor={item => item.id}
+          keyExtractor={(item: MenuItem) => item.id}
           contentContainerStyle={styles.menuList}
           initialNumToRender={12}
           maxToRenderPerBatch={12}
@@ -198,7 +200,7 @@ export default function HomeScreen({ navigation }: Props) {
           removeClippedSubviews={true}
           numColumns={2}
           columnWrapperStyle={styles.columnWrapper}
-          renderItem={({ item }) => (
+          renderItem={({ item }: { item: MenuItem }) => (
             <MenuItemCard item={item} onRemove={handleRemoveItem} />
           )}
           ListEmptyComponent={

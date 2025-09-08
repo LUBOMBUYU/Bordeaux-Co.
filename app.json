@@ -24,8 +24,6 @@
       "package": "com.anonymous.christoffelmenu",
       "jsEngine": "jsc"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    }
+    "platforms": ["ios", "android"]
   }
 }

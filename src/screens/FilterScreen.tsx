@@ -51,11 +51,7 @@ export default function FilterScreen({ navigation }: Props) {
     <View style={styles.container}>
       <Text style={styles.title}>Filter by Course</Text>
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.filterButtonsContainer}
-      >
+      <View style={styles.filterButtonsContainer}>
         {courses.map((course) => (
           <FilterButton
             key={course}
@@ -66,7 +62,7 @@ export default function FilterScreen({ navigation }: Props) {
             onPress={() => setSelectedCourse(course)}
           />
         ))}
-      </ScrollView>
+      </View>
 
       <Text style={styles.resultText}>
         {selectedCourse === 'All'

@@ -2,12 +2,12 @@ import React, { useRef, useState, useCallback } from 'react';
 import { View, Text, TextInput, Pressable, ScrollView, Alert, Animated, KeyboardAvoidingView, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../App';
-import { useMenu } from '../context/MenuContext';
-import { useUser } from '../context/UserContext';
-import { Course } from '../types';
-import { colors } from '../theme/colors';
-import { styles } from '../styles/AddItemScreenStyles';
+import { RootStackParamList } from '../../../App';
+import { useMenu } from '../../context/MenuContext';
+import { useUser } from '../../context/UserContext/UserContext';
+import { Course } from '../../types';
+import { colors } from '../../theme/colors';
+import { styles } from '../../styles/AddItemScreenStyles';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AddItem'>;
 

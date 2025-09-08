@@ -90,7 +90,7 @@ export default function App() {
               <Stack.Screen
                 name="Home"
                 component={HomeScreen}
-                options={{ title: "Christoffel's Menu" }}
+                options={{ title: "Welcome Bordeaux and Company Restaurant" }}
               />
               {/* Add item screen - form for creating new menu items */}
               <Stack.Screen
