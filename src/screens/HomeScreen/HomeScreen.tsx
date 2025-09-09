@@ -17,12 +17,13 @@
  * - FlatList virtualization for large lists
  */
 
-import React, { useMemo, useState, useCallback, useEffect } from 'react';
-import { View, Text, FlatList, Pressable, SafeAreaView, Image, Alert } from 'react-native';
+import React, { useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import { View, Text, FlatList, Pressable, SafeAreaView, Image, Alert, Animated } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../App';
 import { useMenu } from '../../context/MenuContext';
 import { useUser } from '../../context/UserContext/UserContext';
+import { useBasket } from '../../context/BasketContext';
 import MenuItemCard from '../../components/MenuItemCard';
 import { colors } from '../../theme/colors';
 import SearchBar from '../../components/SearchBar';
@@ -53,6 +54,11 @@ export default function HomeScreen({ navigation }: Props) {
   // Extract menu data and functions from context
   const { items, removeItem, averagesByCourse } = useMenu();
   const { currentUser, logout, canAddItem, canRemoveItem } = useUser();
+  const { basketItems } = useBasket();
+
+  // Determine if basket UI should be shown based on user type
+  // Show basket only for customers
+  const showBasket = currentUser?.type === 'customer';
 
   // Local state for search and sorting functionality
   const [searchTerm, setSearchTerm] = useState('');                    // Current search input
@@ -96,6 +102,30 @@ export default function HomeScreen({ navigation }: Props) {
 
   const totalItems = filteredItems.length;
 
+  // Calculate total quantity in basket
+  const totalQuantity = useMemo(() => {
+    return basketItems.reduce((sum, item) => sum + item.quantity, 0);
+  }, [basketItems]);
+
+  // Animated value for count scale
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+
+  // Animate scale when totalQuantity changes
+  useEffect(() => {
+    Animated.sequence([
+      Animated.timing(scaleAnim, {
+        toValue: 1.5,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleAnim, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, [totalQuantity, scaleAnim]);
+
   // Render averages badge row (Final POE requirement)
   const averagesRow = useMemo(() => {
     const entries = Object.entries(averagesByCourse) as [keyof typeof averagesByCourse, number | null][];
@@ -125,9 +155,9 @@ export default function HomeScreen({ navigation }: Props) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Text style={[styles.title, { paddingVertical: 10, backgroundColor: 'white' }]}>Menu</Text>
       <View style={styles.headerArea}>
         <Image source={require('../../../assets/Bordeaux_and_Co.jpeg')} style={styles.logo} resizeMode="contain" />
-        <Text style={styles.title}>Christoffel’s Menu</Text>
         <Text style={styles.subtitle}>Total Items: {totalItems}</Text>
         {currentUser && (
           <Text style={{ color: colors.muted, fontSize: 14, marginTop: 4 }}>
@@ -148,18 +178,38 @@ export default function HomeScreen({ navigation }: Props) {
             <Text style={styles.navBtnText}>Add New Item</Text>
           </Pressable>
         )}
-        <Pressable
-          style={styles.navBtn}
-          onPress={() => navigation.navigate('Filter')}
-        >
-          <Text style={styles.navBtnText}>Filter by Course</Text>
-        </Pressable>
-        <Pressable
-          style={[styles.navBtn, { backgroundColor: colors.secondary }]}
-          onPress={() => navigation.navigate('Basket')}
-        >
-          <Text style={styles.navBtnText}>View Basket</Text>
-        </Pressable>
+        <View style={{ flex: 1, alignItems: 'center' }}>
+          <Pressable
+            style={styles.navBtn}
+            onPress={() => navigation.navigate('Filter')}
+          >
+            <Text style={styles.navBtnText}>Filter by Course</Text>
+          </Pressable>
+        </View>
+        {showBasket && (
+          <Pressable
+            style={[styles.navBtn, { backgroundColor: colors.secondary, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }]}
+            onPress={() => navigation.navigate('Basket')}
+          >
+            <Text style={styles.navBtnText}>View Basket</Text>
+            {totalQuantity > 0 && (
+              <Animated.View
+                style={{
+                  backgroundColor: colors.danger,
+                  borderRadius: 12,
+                  width: 24,
+                  height: 24,
+                  marginLeft: 8,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  transform: [{ scale: scaleAnim }],
+                }}
+              >
+                <Text style={{ color: 'white', fontWeight: 'bold' }}>{totalQuantity}</Text>
+              </Animated.View>
+            )}
+          </Pressable>
+        )}
         <Pressable
           style={[styles.navBtn, { backgroundColor: colors.danger }]}
           onPress={handleLogout}

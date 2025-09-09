@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     elevation: 5,
     alignItems: 'center',
   },
-  logo: { width: scaleWidth(150), height: scaleWidth(90), marginBottom: scaleMargin(12) },
+  logo: { width: '100%', height: scaleWidth(90), marginBottom: scaleMargin(12) },
   title: { fontSize: scaleFont(24), fontWeight: '800', color: colors.primary, textAlign: 'center' },
   subtitle: { marginTop: scaleMargin(4), color: colors.text, fontWeight: '600', textAlign: 'center' },
   badgeRow: { flexDirection: 'row', flexWrap: 'wrap', gap: scaleMargin(8), marginTop: scaleMargin(8), justifyContent: 'center' },
